@@ -1106,6 +1106,7 @@ func New(
 	// set custom mempool that emits Google Cloud Pubsub messages upon injestion
 	noOpMempool := mempool.NewNoOpMempool()
 	if appFlags.PubSubProjectID != "" && appFlags.PubSubTopic != "" && os.Getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" {
+		logger.Info("Using Google Cloud Pubsub mempool")
 		// Note, operators must ensure the <GOOGLE_APPLICATION_CREDENTIALS> environment
 		// variable is set to the location of their creds file.
 		app.SetMempool(mempoolpubsub.NewPubSubMempool(
@@ -1113,12 +1114,13 @@ func New(
 			noOpMempool,
 			txConfig.TxEncoder(),
 			cast.ToString(appOpts.Get(cosmosflags.FlagChainID)),
-			cast.ToString(appOpts.Get(cosmosflags.FlagNode)), // TODO/XXX: In order to get the moniker, we have to get/parse the CometBFT config file.
+			appFlags.PubSubMoniker,
 			appFlags.PubSubProjectID,
 			appFlags.PubSubTopic,
 			false,
 		))
 	} else {
+		logger.Info("Using no-op mempool")
 		app.SetMempool(noOpMempool)
 	}
 
