@@ -48,7 +48,7 @@ require (
 	github.com/burdiyan/kafkautil v0.0.0-20190131162249-eaf83ed22d5b
 	github.com/deckarep/golang-set/v2 v2.3.0
 	github.com/ethereum/go-ethereum v1.12.0
-	github.com/numiadata/tools/mempool v0.0.0-20231204222304-9f4924cd910f
+	github.com/numiadata/tools/mempool v0.0.0-20231212174448-5f4d3af61a9a
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/shopspring/decimal v1.3.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
