@@ -44,10 +44,11 @@ require (
 
 require (
 	cosmossdk.io/errors v1.0.0
-	cosmossdk.io/log v1.1.1-0.20230704160919-88f2c830b0ca
+	cosmossdk.io/log v1.2.1
 	github.com/burdiyan/kafkautil v0.0.0-20190131162249-eaf83ed22d5b
 	github.com/deckarep/golang-set/v2 v2.3.0
 	github.com/ethereum/go-ethereum v1.12.0
+	github.com/numiadata/tools/mempool v0.0.0-20231212174448-5f4d3af61a9a
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/shopspring/decimal v1.3.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
@@ -60,6 +61,7 @@ require (
 	cloud.google.com/go/compute v1.20.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect
+	cloud.google.com/go/pubsub v1.33.0 // indirect
 	cloud.google.com/go/storage v1.30.1 // indirect
 	cosmossdk.io/core v0.5.1 // indirect
 	cosmossdk.io/depinject v1.0.0-alpha.3 // indirect
@@ -286,7 +288,7 @@ require (
 	github.com/richardartoul/molecule v1.0.1-0.20221107223329-32cfee06a052 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rs/cors v1.8.3 // indirect
-	github.com/rs/zerolog v1.29.1 // indirect
+	github.com/rs/zerolog v1.30.0 // indirect
 	github.com/ryancurrah/gomodguard v1.3.0 // indirect
 	github.com/ryanrolds/sqlclosecheck v0.4.0 // indirect
 	github.com/sanposhiho/wastedassign/v2 v2.0.7 // indirect

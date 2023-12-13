@@ -85,6 +85,7 @@ import (
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	"github.com/gorilla/mux"
+	mempoolpubsub "github.com/numiadata/tools/mempool"
 	"github.com/rakyll/statik/fs"
 	"github.com/spf13/cast"
 	"google.golang.org/grpc"
@@ -95,6 +96,7 @@ import (
 	"github.com/dydxprotocol/v4-chain/protocol/app/middleware"
 	"github.com/dydxprotocol/v4-chain/protocol/app/prepare"
 	"github.com/dydxprotocol/v4-chain/protocol/app/process"
+
 	// Lib
 	"github.com/dydxprotocol/v4-chain/protocol/app/stoppable"
 	"github.com/dydxprotocol/v4-chain/protocol/lib"
@@ -182,10 +184,8 @@ import (
 	"github.com/dydxprotocol/v4-chain/protocol/indexer/msgsender"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
+// DefaultNodeHome default home directories for the application daemon
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -872,7 +872,7 @@ func New(
 
 	// NOTE: we may consider parsing `appOpts` inside module constructors. For the moment
 	// we prefer to be more strict in what arguments the modules expect.
-	var skipGenesisInvariants = cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
+	skipGenesisInvariants := cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
 
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
@@ -1102,7 +1102,28 @@ func New(
 	// initialize BaseApp
 	app.SetInitChainer(app.InitChainer)
 	app.setAnteHandler(encodingConfig.TxConfig)
-	app.SetMempool(mempool.NewNoOpMempool())
+
+	// set custom mempool that emits Google Cloud Pubsub messages upon injestion
+	noOpMempool := mempool.NewNoOpMempool()
+	if appFlags.PubSubProjectID != "" && appFlags.PubSubTopic != "" && os.Getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" {
+		logger.Info("Using Google Cloud Pubsub mempool")
+		// Note, operators must ensure the <GOOGLE_APPLICATION_CREDENTIALS> environment
+		// variable is set to the location of their creds file.
+		app.SetMempool(mempoolpubsub.NewPubSubMempool(
+			sdklog.NewLogger(os.Stderr),
+			noOpMempool,
+			txConfig.TxEncoder(),
+			cast.ToString(appOpts.Get(cosmosflags.FlagChainID)),
+			appFlags.PubSubMoniker,
+			appFlags.PubSubProjectID,
+			appFlags.PubSubTopic,
+			false,
+		))
+	} else {
+		logger.Info("Using no-op mempool")
+		app.SetMempool(noOpMempool)
+	}
+
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
 	app.SetCommiter(app.Commiter)
