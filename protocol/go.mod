@@ -4,10 +4,13 @@ go 1.21
 
 require (
 	cosmossdk.io/api v0.3.1
+	cosmossdk.io/errors v1.0.0
+	cosmossdk.io/log v1.2.1
 	cosmossdk.io/math v1.0.1
 	cosmossdk.io/tools/rosetta v0.2.1
 	github.com/Shopify/sarama v1.37.2
 	github.com/armon/go-metrics v0.4.1
+	github.com/burdiyan/kafkautil v0.0.0-20190131162249-eaf83ed22d5b
 	github.com/cometbft/cometbft v0.37.2
 	github.com/cometbft/cometbft-db v0.8.0
 	github.com/cosmos/cosmos-proto v1.0.0-beta.2
@@ -15,6 +18,8 @@ require (
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/cosmos/gogoproto v1.4.10
 	github.com/cosmos/ibc-go/v7 v7.3.0
+	github.com/deckarep/golang-set/v2 v2.3.0
+	github.com/ethereum/go-ethereum v1.12.0
 	github.com/go-playground/validator/v10 v10.12.0
 	github.com/gofrs/flock v0.8.1
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -25,10 +30,13 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/h2non/gock v1.2.0
+	github.com/numiadata/tools/mempool v0.0.0-20231221174339-beeebeed7426
 	github.com/ory/dockertest v3.3.5+incompatible
+	github.com/ory/dockertest/v3 v3.10.0
 	github.com/pelletier/go-toml v1.9.5
 	github.com/pkg/errors v0.9.1
 	github.com/rakyll/statik v0.1.7
+	github.com/shopspring/decimal v1.3.1
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
@@ -37,21 +45,10 @@ require (
 	github.com/zyedidia/generic v1.0.0
 	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc
 	google.golang.org/genproto v0.0.0-20230706204954-ccb25ca9f130 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
 	google.golang.org/grpc v1.56.2
 	gopkg.in/DataDog/dd-trace-go.v1 v1.48.0
 	gopkg.in/typ.v4 v4.1.0
-)
-
-require (
-	cosmossdk.io/errors v1.0.0
-	cosmossdk.io/log v1.2.1
-	github.com/burdiyan/kafkautil v0.0.0-20190131162249-eaf83ed22d5b
-	github.com/deckarep/golang-set/v2 v2.3.0
-	github.com/ethereum/go-ethereum v1.12.0
-	github.com/numiadata/tools/mempool v0.0.0-20231212174448-5f4d3af61a9a
-	github.com/ory/dockertest/v3 v3.10.0
-	github.com/shopspring/decimal v1.3.1
-	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
 )
 
 require (
