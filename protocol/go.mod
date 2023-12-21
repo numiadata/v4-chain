@@ -30,7 +30,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/h2non/gock v1.2.0
-	github.com/numiadata/tools/mempool v0.0.0-20231221174339-beeebeed7426
+	github.com/numiadata/tools/mempool v0.0.0-20231221180449-2a58fead1759
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/pelletier/go-toml v1.9.5
