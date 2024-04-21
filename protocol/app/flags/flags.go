@@ -11,6 +11,9 @@ import (
 
 // A struct containing the values of all flags.
 type Flags struct {
+	PubSubMoniker         string
+	PubSubProjectID       string
+	PubSubTopic           string
 	DdAgentHost           string
 	DdTraceAgentPort      uint16
 	NonValidatingFullNode bool
@@ -26,6 +29,9 @@ type Flags struct {
 
 // List of CLI flags.
 const (
+	PubSubMoniker             = "pubsub-moniker"
+	PubSubProjectID           = "pubsub-project-id"
+	PubSubTopic               = "pubsub-topic"
 	DdAgentHost               = "dd-agent-host"
 	DdTraceAgentPort          = "dd-trace-agent-port"
 	NonValidatingFullNodeFlag = "non-validating-full-node"
@@ -53,6 +59,21 @@ const (
 // These flags should be applied to the `start` command of the V4 Cosmos application.
 // E.g. `dydxprotocold start --non-validating-full-node true`.
 func AddFlagsToCmd(cmd *cobra.Command) {
+	cmd.Flags().String(
+		PubSubMoniker,
+		"",
+		"Set the Google Cloud PubSub node moniker used for mempool events",
+	)
+	cmd.Flags().String(
+		PubSubProjectID,
+		"",
+		"Set the Google Cloud PubSub project ID",
+	)
+	cmd.Flags().String(
+		PubSubTopic,
+		"",
+		"Set the Google Cloud PubSub topic",
+	)
 	cmd.Flags().Bool(
 		NonValidatingFullNodeFlag,
 		DefaultNonValidatingFullNode,
@@ -161,6 +182,24 @@ func GetFlagValuesFromOptions(
 	if option := appOpts.Get(GrpcStreamingEnabled); option != nil {
 		if v, err := cast.ToBoolE(option); err == nil {
 			result.GrpcStreamingEnabled = v
+		}
+	}
+
+if option := appOpts.Get(PubSubMoniker); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubMoniker = v
+		}
+	}
+
+	if option := appOpts.Get(PubSubProjectID); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubProjectID = v
+		}
+	}
+
+	if option := appOpts.Get(PubSubTopic); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubTopic = v
 		}
 	}
 
