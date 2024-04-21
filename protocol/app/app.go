@@ -17,6 +17,7 @@ import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	"cosmossdk.io/log"
+	sdklog "cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/evidence"
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
@@ -111,6 +112,7 @@ import (
 
 	// Mempool
 	"github.com/dydxprotocol/v4-chain/protocol/mempool"
+	mempoolpubsub "github.com/numiadata/tools/mempool"
 
 	// Daemons
 	bridgeclient "github.com/dydxprotocol/v4-chain/protocol/daemons/bridge/client"
@@ -235,10 +237,7 @@ import (
 	streamingtypes "github.com/dydxprotocol/v4-chain/protocol/streaming/types"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -1180,7 +1179,7 @@ func New(
 
 	// NOTE: we may consider parsing `appOpts` inside module constructors. For the moment
 	// we prefer to be more strict in what arguments the modules expect.
-	var skipGenesisInvariants = cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
+	skipGenesisInvariants := cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
 
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
@@ -1473,7 +1472,29 @@ func New(
 	// initialize BaseApp
 	app.SetInitChainer(app.InitChainer)
 	app.setAnteHandler(encodingConfig.TxConfig)
-	app.SetMempool(mempool.NewNoOpMempool())
+
+	// setup mempool
+	// set custom mempool that emits Google Cloud Pubsub messages upon injestion
+	noOpMempool := mempool.NewNoOpMempool()
+	if appFlags.PubSubProjectID != "" && appFlags.PubSubTopic != "" && os.Getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" {
+		logger.Info("Using Google Cloud Pubsub mempool")
+		// Note, operators must ensure the <GOOGLE_APPLICATION_CREDENTIALS> environment
+		// variable is set to the location of their creds file.
+		app.SetMempool(mempoolpubsub.NewPubSubMempool(
+			sdklog.NewLogger(os.Stderr),
+			noOpMempool,
+			txConfig.TxEncoder(),
+			cast.ToString(appOpts.Get(cosmosflags.FlagChainID)),
+			appFlags.PubSubMoniker,
+			appFlags.PubSubProjectID,
+			appFlags.PubSubTopic,
+			false,
+		))
+	} else {
+		logger.Info("Using no-op mempool")
+		app.SetMempool(noOpMempool)
+	}
+
 	app.SetPreBlocker(app.PreBlocker)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
