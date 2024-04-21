@@ -7,7 +7,7 @@ require (
 	cosmossdk.io/math v1.2.0
 	github.com/Shopify/sarama v1.37.2
 	github.com/cometbft/cometbft v0.38.5
-	github.com/cometbft/cometbft-db v0.9.1
+	github.com/cometbft/cometbft-db v0.9.1 // indirect
 	github.com/cosmos/cosmos-proto v1.0.0-beta.4
 	github.com/cosmos/cosmos-sdk v0.50.4
 	github.com/cosmos/go-bip39 v1.0.0
@@ -22,7 +22,6 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/h2non/gock v1.2.0
-	github.com/numiadata/tools/mempool v1.0.0
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/rakyll/statik v0.1.7
@@ -78,7 +77,6 @@ require (
 	cloud.google.com/go/compute v1.23.3 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.5 // indirect
-	cloud.google.com/go/pubsub v1.33.0 // indirect
 	cloud.google.com/go/storage v1.35.1 // indirect
 	cosmossdk.io/collections v0.4.0 // indirect
 	cosmossdk.io/depinject v1.0.0-alpha.4 // indirect
