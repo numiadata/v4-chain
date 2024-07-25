@@ -269,6 +269,6 @@ if option := appOpts.Get(PubSubMoniker); option != nil {
 			result.PubSubTopic = v
 		}
 	}
-
+}
 	return result
 }
