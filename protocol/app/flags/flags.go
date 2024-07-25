@@ -252,24 +252,26 @@ func GetFlagValuesFromOptions(
 	if option := appOpts.Get(VEOracleEnabled); option != nil {
 		if v, err := cast.ToBoolE(option); err == nil {
 			result.VEOracleEnabled = v
-			if option := appOpts.Get(PubSubMoniker); option != nil {
-				if v, err := cast.ToStringE(option); err == nil {
-					result.PubSubMoniker = v
-				}
-			}
-
-			if option := appOpts.Get(PubSubProjectID); option != nil {
-				if v, err := cast.ToStringE(option); err == nil {
-					result.PubSubProjectID = v
-				}
-			}
-
-			if option := appOpts.Get(PubSubTopic); option != nil {
-				if v, err := cast.ToStringE(option); err == nil {
-					result.PubSubTopic = v
-				}
-			}
 		}
-		return result
 	}
+
+	if option := appOpts.Get(PubSubMoniker); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubMoniker = v
+		}
+	}
+
+	if option := appOpts.Get(PubSubProjectID); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubProjectID = v
+		}
+	}
+
+	if option := appOpts.Get(PubSubTopic); option != nil {
+		if v, err := cast.ToStringE(option); err == nil {
+			result.PubSubTopic = v
+		}
+	}
+
+	return result
 }
